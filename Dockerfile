@@ -23,7 +23,12 @@ RUN set -ex \
     && apk --update --no-cache add $BUILD_DEP $DEP \
     && mkdir -p $APP_DIR \
     && curl -sSL "$CDNS_URL" | tar xz -C $APP_DIR \
-    && echo '172.18.18.12/32' > $APP_DIR/chnroute.txt \
+    && echo '10.0.0.0/8' >> $APP_DIR/chnroute.txt \
+    && echo '172.16.0.0.0/13' >> $APP_DIR/chnroute.txt \
+    && echo '172.28.0.0.0/14' >> $APP_DIR/chnroute.txt \
+    && echo '172.26.0.0.0/15' >> $APP_DIR/chnroute.txt \
+    && echo '172.25.0.0.0/16' >> $APP_DIR/chnroute.txt \
+    && echo '192.168.0.0/16' >> $APP_DIR/chnroute.txt \
     && curl 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' \
         | grep ipv4 \
         | grep CN \
