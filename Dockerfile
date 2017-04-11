@@ -20,11 +20,6 @@ EXPOSE $TCP_PORT/tcp
 # build software stack
 ENV BUILD_DEP musl-dev gcc gawk make libtool curl
 RUN set -ex \
-    && echo '114.114.114.114' > /etc/resolv.conf \
-    && echo '151.101.128.249 dl-cdn.alpinelinux.org' >> /etc/hosts \
-    && echo '192.30.255.112 github.com' >> /etc/hosts \
-    && echo '52.216.224.56 github-cloud.s3.amazonaws.com' >> /etc/hosts \
-    && echo '202.12.29.205 ftp.apnic.net' >> /etc/hosts \
     && apk --update --no-cache add $BUILD_DEP $DEP \
     && mkdir -p $APP_DIR \
     && curl -sSL "$CDNS_URL" | tar xz -C $APP_DIR \
