@@ -24,10 +24,8 @@ RUN set -ex \
     && mkdir -p $APP_DIR \
     && curl -sSL "$CDNS_URL" | tar xz -C $APP_DIR \
     && echo '10.0.0.0/8' >> $APP_DIR/chnroute.txt \
-    && echo '172.16.0.0/13' >> $APP_DIR/chnroute.txt \
-    && echo '172.28.0.0/14' >> $APP_DIR/chnroute.txt \
-    && echo '172.26.0.0/15' >> $APP_DIR/chnroute.txt \
-    && echo '172.25.0.0/16' >> $APP_DIR/chnroute.txt \
+    && echo '172.16.0.0/12' >> $APP_DIR/chnroute.txt \
+    && echo '172.32.0.241/32' >> $APP_DIR/chnroute.txt \
     && echo '192.168.0.0/16' >> $APP_DIR/chnroute.txt \
     && curl 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' \
         | grep ipv4 \
@@ -43,4 +41,4 @@ RUN set -ex \
 
 ENTRYPOINT ["/usr/local/bin/chinadns", "-p", "53", "-m", "-y", "0.3", "-d", \
             "-c", "/srv/chinadns/chnroute.txt", \
-            "-s", "172.18.18.12,172.18.18.13"]
+            "-s", "172.32.0.241,172.32.0.242"]
