@@ -13,15 +13,18 @@ ENV CDNS_VER        1.3.2
 ENV CDNS_URL        https://github.com/shadowsocks/ChinaDNS/releases/download/${CDNS_VER}/chinadns-${CDNS_VER}.tar.gz
 ENV CDNS_DIR        $APP_DIR/chinadns-$CDNS_VER
 ENV CHNROUTE_FILE   $APP_DIR/chnroute.txt
+ENV CHINA_DNS       127.0.0.1:5353
+ENV OFFSHORE_DNS    127.0.1.1:5354
 
 EXPOSE $UDP_PORT/udp
 EXPOSE $TCP_PORT/tcp
+
+WORKDIR $APP_DIR
 
 # build software stack
 ENV BUILD_DEP musl-dev gcc gawk make libtool curl
 RUN set -ex \
     && apk --update --no-cache add $BUILD_DEP $DEP \
-    && mkdir -p $APP_DIR \
     && curl -sSL "$CDNS_URL" | tar xz -C $APP_DIR \
     && echo '10.0.0.0/8' >> $APP_DIR/chnroute.txt \
     && echo '172.16.0.0/12' >> $APP_DIR/chnroute.txt \
@@ -39,7 +42,5 @@ RUN set -ex \
     && apk del --purge $BUILD_DEP \
     && rm -rf /var/cache/apk/*
 
-WORKDIR $APP_DIR
-ENTRYPOINT ["/usr/local/bin/chinadns", "-p", "53", "-m", "-y", "0.3", "-d", \
-            "-c", "/srv/chinadns/chnroute.txt", \
-            "-s", "127.0.0.1:5353,127.0.1.1:5354"]
+ADD entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
