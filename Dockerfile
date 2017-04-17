@@ -39,6 +39,7 @@ RUN set -ex \
     && apk del --purge $BUILD_DEP \
     && rm -rf /var/cache/apk/*
 
+WORKDIR $APP_DIR
 ENTRYPOINT ["/usr/local/bin/chinadns", "-p", "53", "-m", "-y", "0.3", "-d", \
             "-c", "/srv/chinadns/chnroute.txt", \
             "-s", "127.0.0.1:5353,127.0.1.1:5354"]
